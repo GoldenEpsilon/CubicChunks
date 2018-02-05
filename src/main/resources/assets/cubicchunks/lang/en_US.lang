@@ -78,6 +78,7 @@ cubicchunks.gui.customcubic.delete=Delete
 
 cubicchunks.gui.customcubic.spawn_size=Spawn Size:
 cubicchunks.gui.customcubic.spawn_tries=Spawn Tries:
+cubicchunks.gui.customcubic.spawn_priority=Priority:
 cubicchunks.gui.customcubic.spawn_probability=Probability:
 cubicchunks.gui.customcubic.spawn_maxprobability=Max. Probability:
 cubicchunks.gui.customcubic.spawn_range=Height %.2f%%%% to %.2f%%%%

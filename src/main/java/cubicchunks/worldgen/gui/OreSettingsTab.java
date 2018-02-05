@@ -155,6 +155,8 @@ class OreSettingsTab {
         private final UISlider<Integer> size;
         private final UISlider<Integer> attempts;
 
+        private final UISlider<Integer> priority;
+
         private final UISlider<Float> probability;
         private final UICheckBox selectBiomes;
 
@@ -175,6 +177,7 @@ class OreSettingsTab {
             this.type = new UISelect<>(gui, 10, Arrays.asList(OreGenType.values()));
             this.size = makeIntSlider(gui, malisisText("spawn_size", " %d"), 1, 50, config.spawnSize);
             this.attempts = makeIntSlider(gui, malisisText("spawn_tries", " %d"), 1, 40, config.spawnTries);
+            this.priority = makeIntSlider(gui, malisisText("spawn_priority", " %d"), 0, 10, config.priority);
             this.probability = makeFloatSlider(gui, malisisText("spawn_probability", " %.3f"), config.spawnProbability);
             this.selectBiomes = makeCheckbox(gui, malisisText("select_biomes"), config.biomes != null);
             this.heightRange = makeRangeSlider(gui, vanillaText("spawn_range"), -2.0f, 2.0f, config.minHeight, config.maxHeight);
@@ -225,6 +228,7 @@ class OreSettingsTab {
             return CustomGeneratorSettings.StandardOreConfig.builder()
                     .biomes(this.selectBiomes.isChecked() ? this.biomesArea.getData().toArray(new Biome[0]) : null)
                     .attempts(this.attempts.getValue())
+                    .priority(this.priority.getValue())
                     .block(this.block.getState())
                     .minHeight(this.heightRange.getMinValue())
                     .maxHeight(this.heightRange.getMaxValue())
@@ -239,7 +243,8 @@ class OreSettingsTab {
             mainArea.add(this.attempts, new GridLocation(3, y, 3));
             mainArea.add(this.probability, new GridLocation(0, ++y, 3));
             mainArea.add(this.selectBiomes, new GridLocation(3, y, 3));
-            mainArea.add(this.heightRange, new GridLocation(0, ++y, 6));
+            mainArea.add(this.priority, new GridLocation(0, ++y, 1));
+            mainArea.add(this.heightRange, new GridLocation(1, y, 5));
         }
 
         private void allowSelectBiomes(UIList<Biome, UICheckBox> biomes, boolean checked) {
@@ -350,6 +355,7 @@ class OreSettingsTab {
 
         private final UISlider<Integer> size;
         private final UISlider<Integer> attempts;
+        private final UISlider<Integer> priority;
 
         private final UISlider<Float> mean;
         private final UISlider<Float> spacing;
@@ -377,6 +383,7 @@ class OreSettingsTab {
             this.type = new UISelect<>(gui, 10, Arrays.asList(OreGenType.values()));
             this.size = makeIntSlider(gui, malisisText("spawn_size", " %d"), 1, 50, config.spawnSize);
             this.attempts = makeIntSlider(gui, malisisText("spawn_tries", " %d"), 1, 40, config.spawnTries);
+            this.priority = makeIntSlider(gui, malisisText("spawn_priority", " %d"), 0, 10, config.priority);
             this.mean = makeFloatSlider(gui, malisisText("mean_height", " %.3f"), -4.0f, 4.0f, config.heightMean);
             this.spacing = makePositiveExponentialSlider(gui, malisisText("spacing_height", " %.3f"), -1f, 6.0f, config.heightSpacing);
             this.stdDev = makeFloatSlider(gui, malisisText("height_std_dev", " %.3f"), 0f, 1f, config.heightStdDeviation);
@@ -432,6 +439,7 @@ class OreSettingsTab {
             return CustomGeneratorSettings.PeriodicGaussianOreConfig.builder()
                     .biomes(this.selectBiomes.isChecked() ? this.biomesArea.getData().toArray(new Biome[0]) : null)
                     .attempts(this.attempts.getValue())
+                    .priority(this.priority.getValue())
                     .block(this.block.getState())
                     .minHeight(this.heightRange.getMinValue())
                     .maxHeight(this.heightRange.getMaxValue())
@@ -447,7 +455,8 @@ class OreSettingsTab {
             int y = -1;
             mainArea.add(this.size, new GridLocation(0, ++y, 3));
             mainArea.add(this.attempts, new GridLocation(3, y, 3));
-            mainArea.add(this.probability, new GridLocation(0, ++y, 3));
+            mainArea.add(this.priority, new GridLocation(0, ++y, 1));
+            mainArea.add(this.probability, new GridLocation(1, y, 2));
             mainArea.add(this.selectBiomes, new GridLocation(3, y, 3));
             mainArea.add(this.mean, new GridLocation(0, ++y, 3));
             mainArea.add(this.spacing, new GridLocation(3, y, 3));

@@ -439,9 +439,10 @@ public class CustomGeneratorSettings {
         public float spawnProbability = 1.0f;
         public float minHeight = Float.NEGATIVE_INFINITY;
         public float maxHeight = Float.POSITIVE_INFINITY;
+        public int priority;
 
         private StandardOreConfig(IBlockState state, Set<Biome> biomes, int spawnSize, int spawnTries, float spawnProbability, float minHeight,
-                float maxHeight) {
+                float maxHeight, int priority) {
             this.blockstate = state;
             this.biomes = biomes;
             this.spawnSize = spawnSize;
@@ -449,6 +450,7 @@ public class CustomGeneratorSettings {
             this.spawnProbability = spawnProbability;
             this.minHeight = minHeight;
             this.maxHeight = maxHeight;
+            this.priority = priority;
         }
 
         public static Builder builder() {
@@ -464,6 +466,7 @@ public class CustomGeneratorSettings {
             private float spawnProbability;
             private float minHeight = Float.NEGATIVE_INFINITY;
             private float maxHeight = Float.POSITIVE_INFINITY;
+            public int priority = 0;
 
             public Builder block(IBlockState blockstate) {
                 this.blockstate = blockstate;
@@ -495,6 +498,11 @@ public class CustomGeneratorSettings {
                 return this;
             }
 
+            public Builder priority(int priority) {
+                this.priority = priority;
+                return this;
+            }
+
             /**
              * If biomes is non-null, adds the biomes to allowed biomes, if it's null - removes biome-specific generation.
              */
@@ -517,10 +525,11 @@ public class CustomGeneratorSettings {
                         .size(config.spawnSize)
                         .attempts(config.spawnTries)
                         .block(config.blockstate)
+                        .priority(config.priority)
                         .biomes(config.biomes == null ? null : config.biomes.toArray(new Biome[0]));
             }
             public StandardOreConfig create() {
-                return new StandardOreConfig(blockstate, biomes, spawnSize, spawnTries, spawnProbability, minHeight, maxHeight);
+                return new StandardOreConfig(blockstate, biomes, spawnSize, spawnTries, spawnProbability, minHeight, maxHeight, priority);
             }
         }
     }
@@ -537,9 +546,10 @@ public class CustomGeneratorSettings {
         public float heightSpacing;
         public float minHeight;
         public float maxHeight;
+        public int priority;
 
         private PeriodicGaussianOreConfig(IBlockState blockstate, Set<Biome> biomes, int spawnSize, int spawnTries, float spawnProbability,
-                float heightMean, float heightStdDeviation, float heightSpacing, float minHeight, float maxHeight) {
+                float heightMean, float heightStdDeviation, float heightSpacing, float minHeight, float maxHeight, int priority) {
             this.blockstate = blockstate;
             this.biomes = biomes;
             this.spawnSize = spawnSize;
@@ -550,6 +560,7 @@ public class CustomGeneratorSettings {
             this.heightSpacing = heightSpacing;
             this.minHeight = minHeight;
             this.maxHeight = maxHeight;
+            this.priority = priority;
         }
 
         public static Builder builder() {
@@ -568,6 +579,7 @@ public class CustomGeneratorSettings {
             private float heightSpacing;
             private float minHeight = Float.NEGATIVE_INFINITY;
             private float maxHeight = Float.POSITIVE_INFINITY;
+            private int priority = 0;
 
             public Builder block(IBlockState blockstate) {
                 this.blockstate = blockstate;
@@ -614,6 +626,11 @@ public class CustomGeneratorSettings {
                 return this;
             }
 
+            public Builder priority(int priority) {
+                this.priority = priority;
+                return this;
+            }
+
             public Builder biomes(Biome... biomes) {
                 if (biomes == null) {
                     this.biomes = null;
@@ -633,6 +650,7 @@ public class CustomGeneratorSettings {
                         .size(config.spawnSize)
                         .attempts(config.spawnTries)
                         .block(config.blockstate)
+                        .priority(config.priority)
                         .biomes(config.biomes == null ? null : config.biomes.toArray(new Biome[0]))
                         .heightMean(0)
                         .heightStdDeviation(1)
@@ -641,7 +659,7 @@ public class CustomGeneratorSettings {
 
             public PeriodicGaussianOreConfig create() {
                 return new PeriodicGaussianOreConfig(blockstate, biomes, spawnSize, spawnTries, spawnProbability, heightMean, heightStdDeviation,
-                        heightSpacing, minHeight, maxHeight);
+                        heightSpacing, minHeight, maxHeight, priority);
             }
 
         }

@@ -67,14 +67,19 @@ public final class DefaultDecorator implements ICubicPopulator {
         }
 
         private void generateOres(ICubicWorld world, CustomGeneratorSettings cfg, Random random, CubePos pos) {
-            // TODO: allow interleaved order
-            for (CustomGeneratorSettings.StandardOreConfig c : cfg.standardOres) {
-                genOreUniform(world, cfg, random, pos, c.spawnTries, c.spawnProbability, new WorldGenMinable(c.blockstate, c.spawnSize),
-                        c.minHeight, c.maxHeight);
-            }
-            for (CustomGeneratorSettings.PeriodicGaussianOreConfig c : cfg.periodicGaussianOres) {
-                genOreBellCurve(world, cfg, random, pos, c.spawnTries, c.spawnProbability, new WorldGenMinable(c.blockstate, c.spawnSize),
-                        c.heightMean, c.heightStdDeviation, c.heightSpacing, c.minHeight, c.maxHeight);
+            for(int priority = 10; priority >= 0; --priority){
+                for (CustomGeneratorSettings.StandardOreConfig c : cfg.standardOres) {
+                    if(c.priority == priority || c.priority > 10 && priority == 10 || c.priority < 0 && priority == 0) {
+                        genOreUniform(world, cfg, random, pos, c.spawnTries, c.spawnProbability, new WorldGenMinable(c.blockstate, c.spawnSize),
+                                c.minHeight, c.maxHeight);
+                    }
+                }
+                for (CustomGeneratorSettings.PeriodicGaussianOreConfig c : cfg.periodicGaussianOres) {
+                    if(c.priority == priority || c.priority > 10 && priority == 10 || c.priority < 0 && priority == 0) {
+                        genOreBellCurve(world, cfg, random, pos, c.spawnTries, c.spawnProbability, new WorldGenMinable(c.blockstate, c.spawnSize),
+                                c.heightMean, c.heightStdDeviation, c.heightSpacing, c.minHeight, c.maxHeight);
+                    }
+                }
             }
         }
     }
